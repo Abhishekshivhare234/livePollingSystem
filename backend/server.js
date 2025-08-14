@@ -16,11 +16,14 @@ const io = socketIo(server, {
 });
 
 // Middleware
-app.use(cors({
-  origin: "https://livepollingsystem-970y.onrender.com",  // or specific domains
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(
+  cors({
+    origin: "https://live-polling-system-seven-gamma.vercel.appit",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // if cookies or auth headers are used
+  })
+);
 
 app.use(express.json());
 
