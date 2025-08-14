@@ -16,7 +16,12 @@ const io = socketIo(server, {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://livepollingsystem-970y.onrender.com",  // or specific domains
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 
 // In-memory state (simple demo store)
@@ -163,7 +168,7 @@ io.on('connection', (socket) => {
     if (!requester || requester.role !== 'teacher') {
       return;
     }
-    
+
     // Remove kicked student from all active polls
     state.activePolls.forEach((poll) => {
       if (poll.isActive && poll.studentAnswers.has(targetUsername)) {
@@ -171,7 +176,7 @@ io.on('connection', (socket) => {
         poll.participants = poll.participants.filter(p => p !== targetUsername);
       }
     });
-    
+
     // Find all sockets for that username (could be multiple tabs)
     const targets = Array.from(state.connectedUsers.values()).filter(u => u.username === targetUsername);
     targets.forEach((u) => {
@@ -182,10 +187,10 @@ io.on('connection', (socket) => {
       }
       state.connectedUsers.delete(u.socketId);
     });
-    
+
     // Broadcast updated participants list
     broadcastParticipants();
-    
+
     // If there's an active poll, also broadcast updated results
     if (state.currentPoll.value) {
       io.emit('pollResults', state.currentPoll.value.votes);
