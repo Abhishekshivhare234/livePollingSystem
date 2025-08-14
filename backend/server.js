@@ -18,7 +18,7 @@ const io = socketIo(server, {
 // Middleware
 app.use(
   cors({
-    origin: "https://live-polling-system-seven-gamma.vercel.appit",
+    origin: "https://live-polling-system-seven-gamma.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // if cookies or auth headers are used
